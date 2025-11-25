@@ -31,6 +31,17 @@ public class UserController {
     // POST
     // =======================
 
+    @GET
+    @Path("/users/{userId}")
+    @Transactional
+    public UserDTO getUserById(@PathParam("userId") UUID userId) {
+        return userService.getUserById(userId);
+    }
+
+    // =======================
+    // POST
+    // =======================
+
     /** Create a new user */
     @POST
     @Path("/users")

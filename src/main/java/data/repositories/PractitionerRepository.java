@@ -17,13 +17,7 @@ public class PractitionerRepository implements PanacheRepositoryBase<Practitione
     }
 
     public List<Practitioner> findAllPractitionersWithRelations(int pageIndex, int pageSize) {
-        List<Practitioner> practitioners = findAll().page(pageIndex, pageSize).list();
-        practitioners.forEach(p -> {
-            Hibernate.initialize(p.getConditions());
-            Hibernate.initialize(p.getEncounters());
-            Hibernate.initialize(p.getObservations());
-        });
-        return practitioners;
+        return findAll().page(pageIndex, pageSize).list();
     }
 
     public Practitioner findById(UUID id) {
@@ -31,12 +25,7 @@ public class PractitionerRepository implements PanacheRepositoryBase<Practitione
     }
 
     public Practitioner findByIdWithRelations(UUID id) {
-        Practitioner practitioner = find("id", id).firstResult();
-        if (practitioner == null) return null;
-        Hibernate.initialize(practitioner.getConditions());
-        Hibernate.initialize(practitioner.getEncounters());
-        Hibernate.initialize(practitioner.getObservations());
-        return practitioner;
+        return find("id", id).firstResult();
     }
 
     public Practitioner findByEmail(String email) {
@@ -44,12 +33,7 @@ public class PractitionerRepository implements PanacheRepositoryBase<Practitione
     }
 
     public Practitioner findByEmailWithRelations(String email) {
-        Practitioner practitioner = find("email", email).firstResult();
-        if (practitioner == null) return null;
-        Hibernate.initialize(practitioner.getConditions());
-        Hibernate.initialize(practitioner.getEncounters());
-        Hibernate.initialize(practitioner.getObservations());
-        return practitioner;
+        return find("email", email).firstResult();
     }
 
     public List<Practitioner> findByOrganizationId(UUID organizationId) {
@@ -57,13 +41,7 @@ public class PractitionerRepository implements PanacheRepositoryBase<Practitione
     }
 
     public List<Practitioner> findByOrganizationIdWithRelations(UUID organizationId) {
-        List<Practitioner> practitioners = find("organization.organizationId = ?1", organizationId).list();
-        practitioners.forEach(p -> {
-            Hibernate.initialize(p.getConditions());
-            Hibernate.initialize(p.getEncounters());
-            Hibernate.initialize(p.getObservations());
-        });
-        return practitioners;
+        return find("organization.organizationId = ?1", organizationId).list();
     }
 
     public Long countByOrganization(UUID organizationId) {

@@ -22,10 +22,6 @@ public class Organization extends PanacheEntityBase {
     @Column(name = "organization_type", nullable = false)
     private OrganizationType organizationType;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
-
     @JsonIgnore
     @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Practitioner> practitioners = new ArrayList<>();
@@ -33,9 +29,8 @@ public class Organization extends PanacheEntityBase {
     public Organization() {
     }
 
-    public Organization(OrganizationType organizationType, Location location) {
+    public Organization(OrganizationType organizationType) {
         this.organizationType = organizationType;
-        this.location = location;
     }
 
     public void setOrganizationType(OrganizationType organizationType) { this.organizationType = organizationType; }
@@ -50,16 +45,8 @@ public class Organization extends PanacheEntityBase {
         return organizationType;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
     public List<Practitioner> getPractitioners() {
         return practitioners;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public void addPractitioner(Practitioner practitioner) {

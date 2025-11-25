@@ -1,6 +1,5 @@
 package data.repositories;
 
-import data.entities.Condition;
 import data.entities.Patient;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.smallrye.mutiny.Uni;
@@ -18,12 +17,7 @@ public class PatientRepository implements PanacheRepositoryBase<Patient, UUID> {
     }
 
     public Patient findByEmailWithRelations(String email) {
-        Patient patient = find("email", email).firstResult();
-        if (patient == null) return null;
-        Hibernate.initialize(patient.getConditions());
-        Hibernate.initialize(patient.getEncounters());
-        Hibernate.initialize(patient.getObservations());
-        return patient;
+        return find("email", email).firstResult();
     }
 
     public Patient findById(UUID id) {
@@ -31,12 +25,7 @@ public class PatientRepository implements PanacheRepositoryBase<Patient, UUID> {
     }
 
     public Patient findByIdWithRelations(UUID id) {
-        Patient patient = find("id", id).firstResult();
-        if (patient == null) return null;
-        Hibernate.initialize(patient.getConditions());
-        Hibernate.initialize(patient.getEncounters());
-        Hibernate.initialize(patient.getObservations());
-        return patient;
+        return find("id", id).firstResult();
     }
 
     public List<Patient> findAllPatients(int pageIndex, int pageSize) {
@@ -44,13 +33,7 @@ public class PatientRepository implements PanacheRepositoryBase<Patient, UUID> {
     }
 
     public List<Patient> findAllPatientsWithRelations(int pageIndex, int pageSize) {
-        List<Patient> patients = findAll().page(pageIndex, pageSize).list();
-        patients.forEach(p -> {
-            Hibernate.initialize(p.getConditions());
-            Hibernate.initialize(p.getEncounters());
-            Hibernate.initialize(p.getObservations());
-        });
-        return patients;
+        return findAll().page(pageIndex, pageSize).list();
     }
 
     public List<Patient> searchByName(String namePattern, int pageIndex, int pageSize) {
@@ -59,14 +42,7 @@ public class PatientRepository implements PanacheRepositoryBase<Patient, UUID> {
     }
 
     public List<Patient> searchByNameWithRelations(String namePattern, int pageIndex, int pageSize) {
-        List<Patient> patients = find("fullName like ?1", "%" + namePattern + "%")
+        return find("fullName like ?1", "%" + namePattern + "%")
                 .page(pageIndex, pageSize).list();
-        patients.forEach(p -> {
-            Hibernate.initialize(p.getConditions());
-            Hibernate.initialize(p.getEncounters());
-            Hibernate.initialize(p.getObservations());
-        });
-        return patients;
     }
-
 }
