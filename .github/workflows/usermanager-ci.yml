@@ -1,4 +1,4 @@
-name: Build & Push Message Service
+name: Build & Push User Manager
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/patientjournal_messageservice:latest .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/patientjournal_usermanager:latest .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/patientjournal_messageservice:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/patientjournal_usermanager:latest
