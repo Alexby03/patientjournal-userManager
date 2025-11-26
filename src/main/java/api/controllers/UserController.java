@@ -38,6 +38,14 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+    /** Get user by Email */
+    @GET
+    @Path("/users/email/{email}")
+    public UserDTO getUserByEmail(@PathParam("email") String email) {
+        return userService.getUserByEmail(email);
+    }
+
+
     // =======================
     // POST
     // =======================
