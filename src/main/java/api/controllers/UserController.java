@@ -67,7 +67,7 @@ public class UserController {
 
     /** Create a new practitioner */
     @POST
-    @Path("/practitioners")
+    @Path("/users/practitioners")
     @Transactional
     public PractitionerDTO createPractitioner(PractitionerCreateDTO dto) {
         return practitionerService.createPractitioner(dto);
@@ -75,7 +75,7 @@ public class UserController {
 
     /** Create a new patient */
     @POST
-    @Path("/patients")
+    @Path("/users/patients")
     @Transactional
     public PatientDTO createPatient(PatientCreateDTO dto) {
         return patientService.createPatient(dto);
