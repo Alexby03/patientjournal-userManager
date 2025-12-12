@@ -4,6 +4,7 @@ import api.dto.*;
 import core.services.PatientService;
 import core.services.PractitionerService;
 import core.services.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -34,6 +35,7 @@ public class UserController {
     @GET
     @Path("/users/{userId}")
     @Transactional
+    @RolesAllowed({"Patient", "Doctor", "OtherStaff"})
     public UserDTO getUserById(@PathParam("userId") UUID userId) {
         return userService.getUserById(userId);
     }
@@ -41,6 +43,7 @@ public class UserController {
     /** Get user by Email */
     @GET
     @Path("/users/email/{email}")
+    @RolesAllowed({"Patient", "Doctor", "OtherStaff"})
     public UserDTO getUserByEmail(@PathParam("email") String email) {
         return userService.getUserByEmail(email);
     }
@@ -89,6 +92,7 @@ public class UserController {
     @PUT
     @Path("/users/{userId}")
     @Transactional
+    @RolesAllowed({"Patient", "Doctor", "OtherStaff"})
     public UserDTO updateUser(@PathParam("userId") UUID userId, UserCreateDTO dto) {
         return userService.updateUser(userId, dto);
     }
@@ -97,6 +101,7 @@ public class UserController {
     @PUT
     @Path("/practitioners/{practitionerId}")
     @Transactional
+    @RolesAllowed({"Doctor", "OtherStaff"})
     public PractitionerDTO updatePractitioner(@PathParam("practitionerId") UUID practitionerId,
                                               PractitionerCreateDTO dto) {
         return practitionerService.updatePractitioner(practitionerId, dto);
@@ -106,6 +111,7 @@ public class UserController {
     @PUT
     @Path("/patients/{patientId}")
     @Transactional
+    @RolesAllowed({"Patient", "Doctor", "OtherStaff"})
     public PatientDTO updatePatient(@PathParam("patientId") UUID patientId, PatientCreateDTO dto) {
         return patientService.updatePatient(patientId, dto);
     }
@@ -116,6 +122,7 @@ public class UserController {
 
     /** Delete a user */
     @DELETE
+    @RolesAllowed({"Doctor"})
     @Path("/users/{userId}")
     @Transactional
     public Response deleteUser(@PathParam("userId") UUID userId) {
@@ -127,6 +134,7 @@ public class UserController {
     @DELETE
     @Path("/practitioners/{practitionerId}")
     @Transactional
+    @RolesAllowed({"Doctor"})
     public Response deletePractitioner(@PathParam("practitionerId") UUID practitionerId) {
         boolean deleted = practitionerService.deletePractitioner(practitionerId);
         return deleted ? Response.noContent().build() : Response.status(Response.Status.NOT_FOUND).build();
@@ -136,6 +144,7 @@ public class UserController {
     @DELETE
     @Path("/patients/{patientId}")
     @Transactional
+    @RolesAllowed({"Doctor"})
     public Response deletePatient(@PathParam("patientId") UUID patientId) {
         boolean deleted = patientService.deletePatient(patientId);
         return deleted ? Response.noContent().build() : Response.status(Response.Status.NOT_FOUND).build();

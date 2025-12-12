@@ -5,6 +5,7 @@ import api.dto.PractitionerDTO;
 import core.enums.UserType;
 import core.mappers.DTOMapper;
 import data.entities.Organization;
+import data.entities.Patient;
 import data.entities.Practitioner;
 import data.repositories.OrganizationRepository;
 import data.repositories.PractitionerRepository;
@@ -75,23 +76,17 @@ public class PractitionerService {
     public PractitionerDTO createPractitioner(PractitionerCreateDTO dto) {
         validateCreateDTO(dto);
 
-        Organization org = organizationRepository.findById(dto.organizationId);
-        if (org == null) {
-            throw new IllegalArgumentException("Organization not found");
-        }
-
         Practitioner existing = practitionerRepository.findByEmail(dto.email);
         if (existing != null) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        Practitioner practitioner = new Practitioner(
-                dto.fullName,
-                dto.email,
-                hashPassword(dto.password),
-                UserType.Doctor,
-                org
-        );
+        Practitioner practitioner = new Practitioner();
+        practitioner.setFullName(dto.fullName);
+        practitioner.setEmail(dto.email);
+        practitioner.setPassword(hashPassword(dto.password));
+        practitioner.setId(dto.practitionerId);
+        practitioner.setUserType(UserType.Doctor);
 
         practitionerRepository.persist(practitioner);
         return DTOMapper.toPractitionerDTO(practitioner, false);
@@ -133,9 +128,6 @@ public class PractitionerService {
         }
         if (dto.password == null || dto.password.isEmpty()) {
             throw new IllegalArgumentException("Password is required");
-        }
-        if (dto.organizationId == null) {
-            throw new IllegalArgumentException("Organization ID is required");
         }
     }
 

@@ -99,6 +99,7 @@ public class PatientService {
         patient.setFullName(dto.fullName);
         patient.setEmail(dto.email);
         patient.setPassword(hashPassword(dto.password));
+        patient.setId(dto.patientId);
         patient.setUserType(UserType.Patient);
 
         patientRepository.persist(patient);

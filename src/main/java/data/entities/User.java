@@ -14,7 +14,6 @@ import java.util.UUID;
 @DiscriminatorColumn(name = "user_role")
 public abstract class User extends PanacheEntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", nullable = false)
     private UUID id;
 
@@ -42,6 +41,10 @@ public abstract class User extends PanacheEntityBase {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getFullName() {
